@@ -1,0 +1,22 @@
+html, body {
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  background-color: #eee;
+}
+
+.map-title {
+	text-align: center;
+}
+
+#map-canvas {
+	width: 80%;
+	height: 600px;
+	margin: 0 auto;
+}
+
+/* TODO: set css sytle for class "map-spaceship" as height is 100px */
+
+/* TODO: set css style for id "spaceship" as point cursor and top margin is 15px */
+
+/* TODO: set css style for message poped up as you like */
