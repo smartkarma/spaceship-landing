@@ -44,7 +44,7 @@ $(function() {
 
     var icon = {
       url: $('#spaceship').attr('src'),
-      scaledSize: new google.maps.Size(100, 100)
+      scaledSize: new google.maps.Size(32, 32)
     };
 
     spaceship = new google.maps.Marker({
