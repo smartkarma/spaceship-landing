@@ -5,8 +5,21 @@ html, body {
   background-color: #eee;
 }
 
+.map {
+	text-align: center;
+}
+
 .map-title {
 	text-align: center;
+}
+
+.map-spaceship {
+	height: 100px;
+}
+
+#spaceship {
+	margin-top: 15px;
+	cursor: pointer;
 }
 
 #map-canvas {
@@ -15,8 +28,7 @@ html, body {
 	margin: 0 auto;
 }
 
-/* TODO: set css sytle for class "map-spaceship" as height is 100px */
-
-/* TODO: set css style for id "spaceship" as point cursor and top margin is 15px */
-
-/* TODO: set css style for message poped up as you like */
+.map-message {
+	font-size: 20px;
+	color: red;
+}

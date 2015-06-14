@@ -2,91 +2,85 @@ $(function() {
   var map, spaceship, message, infowindow, geocoder;
   var smartkarma = new google.maps.LatLng(1.335056, 103.964932);
 
-  initialize(); 
+    initialize();
 
   function initialize() {
+    geocoder = new google.maps.Geocoder();
+
     var mapOptions = {
       zoom: 8,
       center: smartkarma
     };
 
-    // understand how function works. Don't be afraid of the seemingly complex api,
-    // they are just methods/functions waiting for you to use.
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   }
 
-  // understand event and event handler
-  $('#map-form').submit(function(e) {
-    e.preventDefault();
-    locateAddress();
-  }); 
-
   function locateAddress() {
-    // TODO: get the value from input the commander provide using jquery
-    var location =  
-
-    // TODO: show alert info when no location is provided in the input box
-    if() {
-
+    var location = $('#map-input').val().trim(); 
+    if(!location) {
+      alert('Sorry, Commander! We didn\'t receive an address!');
+      $('#map-input').focus();
+      return;
     }
-
-    // use google map api to analysis your location
-    geocoder = new google.maps.Geocoder();
-
     geocoder.geocode( { 'address': location}, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         var address = results[0].geometry.location;
-
-        // lauch your spaceship here with valid address
         launchSpaceship(address);
+        $('#map-input').val("");
       } else {
         alert('Sorry, Commander! We cannot find the address you provide!');
       }
     });
   }
 
-  // TODO: fade out your spaceship image and show it on the map
   function launchSpaceship(address) {
+    if(spaceship) {
+      spaceship.setMap(null);
+    }
+    map.setZoom(8);
+    map.panTo(address);
 
+    $('#spaceship').fadeOut();
+
+    var icon = {
+      url: $('#spaceship').attr('src'),
+      scaledSize: new google.maps.Size(100, 100)
+    };
 
     spaceship = new google.maps.Marker({
-
+      position: address,
+      map: map,
+      icon: icon,
+      animation: google.maps.Animation.DROP
     });
 
-    // start to land your spaceship when it appears on the map after 0.5 second
+    spaceship.setMap(map);
+
     setTimeout(landSpaceship, 500);
   }
 
-  // TODO: show "landing..." message box above the spaceship
   function landSpaceship() {
-    
+    message = "<p class='map-message'>Landing...</p>";
     infowindow = new google.maps.InfoWindow({
-      
+      content: message
     });
-    
-    // start to zoom in after 0.5 second
+    infowindow.open(map, spaceship);
     setTimeout(zoomIn, 500);
   }
 
-  // TODO: call smoothZoom function provided below with landSuccess as callback function
   function zoomIn() {
-    
+    smoothZoom(map, 16, map.getZoom(), landSuccess);
   }
 
   function landSuccess() {
     setTimeout(showMessage, 500);
   }
 
-  // TODO: change the message box content to "Landed Successfully!"
   function showMessage() {
-    
+    infowindow.setContent("<p class='map-message'>Landed Successfully!</p>")
   }
 
-  // smoothZoom is provided to zoom in the map smoothly.
-  // map: map
-  // max: maximum zoom you want to achieve
-  // cnt: current zoom the map is
-  // callback: function you want to call in the end
+  // the smooth zoom function
   function smoothZoom (map, max, cnt, callback) {
     if (cnt >= max) {
       callback(); 
@@ -100,11 +94,9 @@ $(function() {
       setTimeout(function(){map.setZoom(cnt)}, 120); // 80ms is what I found to work well on my system -- it might not work well on all systems
     }
   }
-});
 
-/*
-  Bonus: 
-  1. clear the input box content when necessary
-  2. let input box get focus when necessary
-  3. other details that you think necessary
-*/
+  $('#map-form').submit(function(e) {
+    e.preventDefault();
+    locateAddress();
+  });
+});
